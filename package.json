@@ -1,0 +1,25 @@
+{
+  "name": "cloud_function_uv_index_read",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "copy-files": "cp package.json ./dist; cp iam.key ./dist"
+  },
+  "keywords": [],
+  "author": "Vitaliy Sheyanov",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.15.0",
+    "typescript": "^4.6.4",
+    "yandex-cloud": "^1.4"
+  },
+  "dependencies": {
+    "got": "^11.8.3",
+    "grib2class": "^1.0.7",
+    "ydb-sdk": "^3.2.0"
+  }
+}
