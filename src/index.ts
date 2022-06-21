@@ -11,13 +11,12 @@ module.exports.handler = async function (event) {
     )
 
     try {
-        console.log(event.queryStringParameters);
         const request = UVQuery.createInstance(event.queryStringParameters.lat, event.queryStringParameters.lon, event.queryStringParameters.dt);
-        console.log(request);
-        await repository.getResult(request);
+        const result = await repository.getResult(request);
         return {
             statusCode: 200,
-            body: JSON.stringify(event)
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify(result)
         }
     } catch (e) {
         return {
@@ -29,14 +28,13 @@ module.exports.handler = async function (event) {
     }
 }
 
-module.exports.handler({
-    queryStringParameters: {
-        lat: -30.69868,
-        // lat: -24.69868,
-        // lat: 90,
-        lon: 122.0593
-    }
-}).then((r) => {
-    console.log(r);
-    console.log("end");
-})
+// module.exports.handler({
+//     queryStringParameters: {
+//         lat: 60.09868,
+//         lon: 30.0593,
+//         dt: "2022-06-21T12:00:00.000Z"
+//     }
+// }).then((r) => {
+//     console.log(r);
+//     console.log("end");
+// })

@@ -18,7 +18,7 @@ DECLARE $datetime AS Datetime;
 
 SELECT dt, JSON_VALUE(uvi, "$[__pos__]" RETURNING Uint16) AS uvi
 FROM ${UVRepository.TABLE_NAME}
-WHERE lat == $lat AND lon == $lon AND dt > $datetime
+WHERE lat == $lat AND lon == $lon AND dt >= $datetime
 ;`;
 
     private constructor(readonly driver: Driver) {
@@ -37,10 +37,9 @@ WHERE lat == $lat AND lon == $lon AND dt > $datetime
 
     }
 
-    async getResult(request: UVQuery) {
-        await this.driver.tableClient.withSession(async (session) => {
-            const r = await this.readTable(session, request);
-            console.log("result",r);
+    async getResult(request: UVQuery): Promise<Result[]> {
+        return  await this.driver.tableClient.withSession(async (session) => {
+            return await this.readTable(session, request);
         }, UVRepository.TIMEOUT);
     }
 
@@ -65,27 +64,17 @@ WHERE lat == $lat AND lon == $lon AND dt > $datetime
     }
 
     private static getDbRequestLon(request: UVQuery): number {
-        const x = (request.lng + 180) * 10;
+        const x = request.lng * 10;
         return floorNearest(x, UVRepository.DB_LON_RANGE);
     }
 
     private static getDataIndex(request: UVQuery): number {
-        // const latSize = 95;
-        // const lonSize = 900;
-        console.log("db lat", UVRepository.getDbRequestLat(request));
-        console.log("db lon", UVRepository.getDbRequestLon(request));
         const lat = roundNearest((UVRepository.getDbRequestLat(request) + UVRepository.DB_LAT_RANGE), 5);
-        console.log("lat", lat);
         const lon = roundNearest(UVRepository.getDbRequestLon(request), 5);
-        console.log("lon", lon);
         const requestRoundLat = roundNearest(request.lat * 10, 5);
-        console.log("requestRoundLat", requestRoundLat);
-        const requestRoundLon = roundNearest((180 + request.lng) * 10 , 5);
-        console.log("requestRoundLon", requestRoundLon);
+        const requestRoundLon = roundNearest(request.lng * 10 , 5);
         const y = Math.abs(lat - requestRoundLat) / 5;
-        console.log("y", y);
         const x = (requestRoundLon - lon) / 5;
-        console.log("x", x);
         return y * UVRepository.DB_LON_RANGE / 5 + x
     }
 
