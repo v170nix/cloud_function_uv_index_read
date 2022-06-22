@@ -16,15 +16,23 @@ module.exports.handler = async function (event) {
         return {
             statusCode: 200,
             headers: {"content-type": "application/json"},
-            body: JSON.stringify(result)
+            body: JSON.stringify({
+                    status: "OK",
+                    indices: result
+                }
+            )
         }
     } catch (e) {
         return {
             statusCode: 400,
-            body: JSON.stringify(e.message)
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({
+                status: 'ERROR',
+                message: e.message
+            })
         }
     } finally {
-        await repository.close();
+        // await repository.close();
     }
 }
 
