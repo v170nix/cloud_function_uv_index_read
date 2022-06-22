@@ -15,8 +15,11 @@ export class Result extends TypedData {
     public uvi: number;
 
     constructor(data: IResult) {
-        super(data);
+        super({
+            dt: data.dt,
+            uvi: data.uvi / 100
+        });
         this.dt = data.dt;
-        this.uvi = data.uvi;
+        this.uvi = data.uvi / 100;
     }
 }
