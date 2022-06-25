@@ -38,9 +38,9 @@ module.exports.handler = async function (event) {
 
 // module.exports.handler({
 //     queryStringParameters: {
-//         lat: 60.09868,
-//         lon: 30.0593,
-//         dt: "2022-06-21T12:00:00.000Z"
+//         lat: 0.1,
+//         lon: 179.5,
+//         dt: "2022-06-26T23:00:00.000Z"
 //     }
 // }).then((r) => {
 //     console.log(r);

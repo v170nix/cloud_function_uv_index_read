@@ -59,12 +59,12 @@ WHERE lat == $lat AND lon == $lon AND dt >= $datetime
     }
 
     private static getDbRequestLat(request: UVQuery): number {
-        const x = 901 - request.lat * 10;
+        const x = 901 - roundNearest(request.lat * 10, 5);
         return 901 - floorNearest(x, UVRepository.DB_LAT_RANGE) - UVRepository.DB_LAT_RANGE;
     }
 
     private static getDbRequestLon(request: UVQuery): number {
-        const x = request.lng * 10;
+        const x = roundNearest(request.lng * 10 , 5);
         return floorNearest(x, UVRepository.DB_LON_RANGE);
     }
 
