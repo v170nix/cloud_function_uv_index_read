@@ -4,17 +4,28 @@
     "moduleResolution": "node",
     "target": "es6",
     "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "experimentalDecorators": true,
     "lib": ["es2015"]
   },
-  "exclude": [
-    "node_modules",
-    "*/**/@types",
-    "*/**/__tests__",
-    "*/**/__data__",
-    "*/**/__helpers__",
-    "*/**/__mocks__"
-  ]
+  "include": [
+    "src",
+    "webpack.ts"
+  ],
+//  "exclude": [
+//    "node_modules",
+//    "*/**/@types",
+//    "*/**/__tests__",
+//    "*/**/__data__",
+//    "*/**/__helpers__",
+//    "*/**/__mocks__"
+//  ]
 }
