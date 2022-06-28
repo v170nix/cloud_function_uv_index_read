@@ -37,6 +37,14 @@ WHERE lat == $lat AND lon == $lon AND dt >= $datetime
 
     }
 
+    static async createFromDriver(driver: Driver): Promise<UVRepository> {
+        if (!await driver.ready(UVRepository.TIMEOUT)) {
+            throw Error('Inner driver error');
+        }
+        return new UVRepository(driver);
+
+    }
+
     async getResult(request: UVQuery): Promise<Result[]> {
         return  await this.driver.tableClient.withSession(async (session) => {
             return await this.readTable(session, request);
