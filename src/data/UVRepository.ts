@@ -53,12 +53,20 @@ WHERE lat == $lat AND lon == $lon AND dt >= $datetime
 
     private async readTable(session: Session, request: UVQuery): Promise<Result[]> {
         const q = UVRepository.query.replace("__pos__", UVRepository.getDataIndex(request).toString());
+        const dbLat = UVRepository.getDbRequestLat(request);
+        let dbLon = UVRepository.getDbRequestLon(request);
+        if (dbLon === 3600) {
+            dbLon = 0;
+        }
+        if (dbLon > 3600) {
+            return Promise.reject();
+        }
         async function select(): Promise<Result[]> {
             const preparedQuery = await session.prepareQuery(q);
             const {resultSets} = await session.executeQuery(preparedQuery, {
                 '$datetime': TypedValues.datetime(request.date),
-                '$lat': TypedValues.int32(UVRepository.getDbRequestLat(request)),
-                '$lon': TypedValues.uint32(UVRepository.getDbRequestLon(request)),
+                '$lat': TypedValues.int32(dbLat),
+                '$lon': TypedValues.uint32(dbLon),
             });
             const result = Result.createNativeObjects(resultSets[0])
             return result as Result[]
